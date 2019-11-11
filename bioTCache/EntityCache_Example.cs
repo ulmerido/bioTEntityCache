@@ -138,6 +138,13 @@ namespace bioTCache
 
         private void doGetUpdateAndRemove()
         {
+           m_StudentCache.Add(new Student()
+            {
+                Id = 203428453,
+                FullName = "Idp Ulmer",
+                AvarageGrades = 14,
+                Birthdate = DateTime.Now
+            });
             var ido = m_StudentCache.Get(203428453);
             ido.AvarageGrades = 60;
             m_StudentCache.Update(ido);

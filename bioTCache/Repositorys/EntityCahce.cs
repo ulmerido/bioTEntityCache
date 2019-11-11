@@ -16,7 +16,7 @@ namespace bioTCache
         private readonly IRepository      r_Repository;
         private readonly ISerializer      r_Serializer;
         private readonly ReaderWriterLock r_ReadWritelock = new ReaderWriterLock();
-        private Dictionary<string, T>     m_CachedData;
+        private Dictionary<string, T>     m_CachedData = new Dictionary<string, T>();
 
         public event EventHandler Event_AddCompleted;
         public event EventHandler Event_RemoveCompleted;
@@ -75,11 +75,12 @@ namespace bioTCache
                 {
                     var response = r_Repository.Get(i_Id);
                     string obj = response.Content;
-                    if (!response.Success)
+                    result = r_Serializer.Deserialize<T>(obj);
+                    if (!response.Success || result ==  null)
                     {
                         throw new Exception(response.ErrorMessage);
                     }
-                    result = r_Serializer.Deserialize<T>(obj);
+                   
                     m_CachedData.Add(result.Id.ToString(), deepCopy(result));
                 }
             }
@@ -162,12 +163,13 @@ namespace bioTCache
             try
             {
                 var response = r_Repository.GetAll();
-                if (!response.Success)
+                if (!response.Success || response.Content == null)
                 {
                     throw new Exception(response.ErrorMessage);
                 }
 
                 m_CachedData = r_Serializer.Deserialize<Dictionary<string, T>>(response.Content);
+                if (m_CachedData == null) m_CachedData = new Dictionary<string, T>();
                 LastEagerUpdate = DateTime.Now;
             }
             finally
@@ -199,7 +201,7 @@ namespace bioTCache
             {
                 var response = r_Repository.Get(i_Id);
                 string obj = response.Content;
-                if (!response.Success)
+                if (!response.Success || response.Content == null)
                 {
                     throw new Exception(response.ErrorMessage);
                 }
