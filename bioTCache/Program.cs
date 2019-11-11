@@ -9,16 +9,11 @@ using System.Linq;
 
 namespace bioTCache
 {
-  
-
     public class Program
     {
-
         static void Main(string[] args)
         {
             new EntityCache_Example().Start();
         }
-
-
     }
 }

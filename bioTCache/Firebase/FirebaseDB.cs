@@ -1,9 +1,8 @@
-﻿
+﻿using System;
+using System.Net.Http;
+
 namespace bioTCache.Firebase
 {
-    using System;
-    using System.Net.Http;
-
     public class FirebaseDB
     {
         public string RootNode { get; set; }

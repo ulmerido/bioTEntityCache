@@ -7,12 +7,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-
 namespace bioTCache
 {
     class EntityCache_Example
     {
-
         private readonly string              r_baseUrl = "https://biot-cec18.firebaseio.com/";
         private FirebaseDB                   m_Firebase;
         private FirebaseRepository           m_WeatherRepository;
