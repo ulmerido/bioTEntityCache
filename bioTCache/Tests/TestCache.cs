@@ -1,4 +1,5 @@
-﻿using System;
+﻿using bioTCache.Entitys;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace bioTCache.Tests
 {
-    class TestCache<T> where T : IEntity
+    class TestCache
     {
-        private EntityCache<T> m_Cache;
-        private T              m_Dummy;
+        private EntityCache<Student> m_Cache;
+        private Student              m_Dummy;
 
-        public TestCache(EntityCache<T> cache, T i_Dummy)
+        public TestCache(EntityCache<Student> cache, Student i_Dummy)
         {
             m_Cache = cache;
             m_Dummy = i_Dummy;
@@ -30,6 +31,28 @@ namespace bioTCache.Tests
             }
 
             return true;
+        }
+
+        public bool TestUpdate()
+        {
+            bool res;
+            try
+            {
+                m_Cache.Add(m_Dummy);
+                var original = m_Cache.Get(m_Dummy.Id);
+                var before = original.AvarageGrades;
+                original.AvarageGrades = before+1;
+                m_Cache.Update(original);
+                var after = m_Cache.Get(m_Dummy.Id).AvarageGrades;
+
+                res = before != after;
+            }
+            catch
+            {
+                res = false;
+            }
+
+            return res;
         }
 
         public bool TestAddGet()
@@ -98,10 +121,12 @@ namespace bioTCache.Tests
             bool testAddGet = TestAddGet();
             bool testRemove = TestRemove();
             bool testGetAll = TestGetAll();
+            bool testUpdate=  TestUpdate();
 
             printTestResult("Test<AddGet> ", testAddGet);
             printTestResult("Test<Remove> ", testRemove);
             printTestResult("Test<GetAll> ", testGetAll);
+            printTestResult("Test<Update> ", testUpdate);
 
             return testAddGet && testRemove;
         }
@@ -128,6 +153,5 @@ namespace bioTCache.Tests
             Console.ForegroundColor = ConsoleColor.White;
         }
       
-
     }
 }

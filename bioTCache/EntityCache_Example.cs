@@ -125,7 +125,7 @@ namespace bioTCache
 
         private  void runTest()
         {
-            var tester = new TestCache<Student>(m_StudentCache, new Student()
+            var tester = new TestCache(m_StudentCache, new Student()
             {
                 Id = 999,
                 Birthdate = DateTime.Now,
